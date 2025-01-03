@@ -17,13 +17,13 @@ export const useUserStore = create<User>(
             { username: "", role: "", isLoggedIn: false, }
         return {
             ...initialvals,
-            logout: () => { 
+            logout: () => {
                 const newstate = { username: "", role: "", isLoggedIn: false };
                 sessionStorage.setItem(keyname, JSON.stringify(newstate));
-                set(newstate); 
+                set(newstate);
             },
             login: async (username: string, password: string) => {
-                const roleval = username.toLowerCase().startsWith("a") ? "admin" : "user";
+                const roleval = username.toLowerCase().startsWith("a") && password != "" ? "admin" : "user";
                 const newstate = { username: username, role: roleval, isLoggedIn: true };
                 sessionStorage.setItem(keyname, JSON.stringify(newstate));
                 set(newstate);
