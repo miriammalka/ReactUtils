@@ -13,16 +13,16 @@ interface User {
 }
 
 async function loginUser(apiUrl: string, username: string, password: string): Promise<User> {
-    apiUrl = apiUrl + "user/";
+    apiUrl = apiUrl + "users/";
     const postData = createAPI(apiUrl, "").postData;
     const user = await postData<User>("login", { username, password });
     return user;
 }
 
 async function logoutUser(apiUrl: string, username: string): Promise<User> {
-    apiUrl = apiUrl + "user/";
+    apiUrl = apiUrl + "users/";
     const postData = createAPI(apiUrl, "").postData;
-    const user = await postData<User>("logout", { username});
+    const user = await postData<User>("logout", { username });
     return user;
 }
 
@@ -39,16 +39,16 @@ export function getUserStore(apiUrl: string) {
                     { userName: "", roleName: "", roleRank: 0, sessionKey: "", errorMessage: "", isLoggedIn: false, }
                 return {
                     ...initialvals,
-                    logout: async (username:string) => {
-                        const user = await logoutUser(apiUrl,username);
-                        const newstate = { userName: user.userName, roleName: user.roleName, roleRank: user.roleRank, sessionKey: user.sessionKey, errorMessage: user.errorMessage, isLoggedIn: false};
+                    logout: async (username: string) => {
+                        const user = await logoutUser(apiUrl, username);
+                        const newstate = { userName: user.userName, roleName: user.roleName, roleRank: user.roleRank, sessionKey: user.sessionKey, errorMessage: user.errorMessage, isLoggedIn: false };
                         sessionStorage.setItem(keyname, JSON.stringify(newstate));
                         set(newstate);
                     },
                     login: async (username: string, password: string) => {
                         const user = await loginUser(apiUrl, username, password);
                         const loggedin = !user.sessionKey ? false : true;
-                        const newstate = { userName: user.userName, roleName: user.roleName, roleRank: user.roleRank, sessionKey: user.sessionKey, errorMessage: user.errorMessage, isLoggedIn: loggedin};
+                        const newstate = { userName: user.userName, roleName: user.roleName, roleRank: user.roleRank, sessionKey: user.sessionKey, errorMessage: user.errorMessage, isLoggedIn: loggedin };
                         sessionStorage.setItem(keyname, JSON.stringify(newstate));
                         set(newstate);
                     }
